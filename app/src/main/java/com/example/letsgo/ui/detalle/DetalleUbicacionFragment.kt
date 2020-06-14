@@ -107,4 +107,30 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
+    override fun onStart() {
+        super.onStart()
+        mMapView.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mMapView.onStop()
+    }
+
+
+    override fun onPause() {
+        mMapView.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        mMapView.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mMapView.onLowMemory()
+
+    }
 }
