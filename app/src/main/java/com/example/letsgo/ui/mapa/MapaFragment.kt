@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.letsgo.R
 import com.example.letsgo.activities.MainActivityViewModel
 import com.example.letsgo.constantes.GPS_PERMISION
+import com.example.letsgo.constantes.TiposLocales
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -50,7 +51,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
         var mapViewBundle: Bundle? = null
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
@@ -60,13 +60,13 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
         mMapView.getMapAsync(this)
         button.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion)
+            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.AGENCIAS.ordinal))
         }
         button2.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion)
+            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.RESTAURANTE.ordinal))
         }
         button3.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion)
+            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.TURISTICO.ordinal))
         }
 
 

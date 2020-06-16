@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.letsgo.R
 import com.example.letsgo.activities.MainActivityViewModel
@@ -28,16 +29,21 @@ import kotlinx.android.synthetic.main.fragment_detalle_ubicacion.*
 class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: MainActivityViewModel
-    lateinit var adapter : ViewPagerStateAdapter
+    lateinit var adapter: ViewPagerStateAdapter
+    var tipo = 0
+    val vm by activityViewModels<MainActivityViewModel>()
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         viewModel =
-                ViewModelProvider(this).get(MainActivityViewModel::class.java)
+            ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        tipo = arguments?.getInt("tipo") ?: 0
         return inflater.inflate(R.layout.fragment_detalle_ubicacion, container, false)
     }
+
     private lateinit var mMapView: MapView
     lateinit var googleMap1: GoogleMap
     lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -58,15 +64,16 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
         mMapView.onCreate(mapViewBundle)
         mMapView.getMapAsync(this)
         adapter = ViewPagerStateAdapter(childFragmentManager)
-        adapter.addFrag(NearByFragment(),"Cercanos")
-        adapter.addFrag(RecomendadoFragment(),"Recomendados")
+        adapter.addFrag(NearByFragment.newInstance(tipo), "Cercanos")
+        adapter.addFrag(RecomendadoFragment.newInstance(tipo), "Recomendados")
         view_pager_detalle.adapter = adapter
         view_pager_detalle.offscreenPageLimit = 2
         tabLayout.setupWithViewPager(view_pager_detalle)
 
 
     }
-    var marker : Marker?=null
+
+    var marker: Marker? = null
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap ?: return
         googleMap1 = googleMap
@@ -105,8 +112,19 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
                     )
                 }
             }
+            vm.ubicaciones.filter { it.tipo == tipo }.forEach {
+                addMarker(
+                    MarkerOptions().position(
+                        LatLng(
+                            it.posicion?.latitude!!,
+                            it.posicion?.longitude!!
+                        )
+                    )
+                )
+            }
         }
     }
+
     override fun onStart() {
         super.onStart()
         mMapView.onStart()

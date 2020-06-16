@@ -20,5 +20,9 @@
         android:id="@+id/nav_detalleUbicacion"
         android:name="com.example.letsgo.ui.detalle.DetalleUbicacionFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_detalle_ubicacion" />
+        tools:layout="@layout/fragment_detalle_ubicacion" >
+        <argument
+            android:name="tipo"
+            app:argType="integer" />
+    </fragment>
 </navigation>
