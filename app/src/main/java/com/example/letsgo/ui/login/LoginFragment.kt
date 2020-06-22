@@ -1,11 +1,14 @@
 package com.example.letsgo.ui.login
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +50,8 @@ class LoginFragment : Fragment() {
             )
         } else {
             val providers = arrayListOf(
-                AuthUI.IdpConfig.GoogleBuilder().build()
+                AuthUI.IdpConfig.GoogleBuilder().build(),
+                AuthUI.IdpConfig.EmailBuilder().build()
             )
             startActivityForResult(
                 AuthUI.getInstance()
@@ -85,6 +89,18 @@ class LoginFragment : Fragment() {
         } else if (resultCode == Activity.RESULT_CANCELED) {
             findNavController().navigateUp()
         }
+    }
+
+    fun tienePermisos(): Boolean {
+        return (ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_DENIED ||
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+                )
     }
 }
 
