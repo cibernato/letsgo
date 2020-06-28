@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_mapa.*
 
 class MapaFragment : Fragment(), OnMapReadyCallback {
@@ -59,6 +61,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         mMapView.onCreate(mapViewBundle)
 
         mMapView.getMapAsync(this)
+
         button.setOnClickListener {
             findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.AGENCIAS.ordinal))
         }
