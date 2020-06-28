@@ -37,6 +37,6 @@
         tools:layout="@layout/fragment_presentacion" >
         <argument
             android:name="ubicacion"
-            app:argType="com.example.letsgo.Ubicacion" />
+            app:argType="com.example.letsgo.models.Ubicacion" />
     </fragment>
 </navigation>
