@@ -70,8 +70,11 @@ class LectorQrFragment : Fragment() {
                     codeScanner = CodeScanner(requireContext(), scanner_view)
                 }
                 codeScanner.setDecodeCallback {
-                    val id = it.text
-                    Toast.makeText(requireContext(),"Valor recibido $id",Toast.LENGTH_LONG).show()
+                    activity?.runOnUiThread {
+                        val id = it.text
+                        Toast.makeText(requireContext(),"Valor recibido $id",Toast.LENGTH_LONG).show()
+                        codeScanner.startPreview()
+                    }
                 }
                 codeScanner.startPreview()
             } catch (e: Exception) {
