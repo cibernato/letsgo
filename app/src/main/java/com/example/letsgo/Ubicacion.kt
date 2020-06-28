@@ -11,6 +11,7 @@ class Ubicacion(
     var posicion: @RawValue GeoPoint? = null,
     var imagenes: @RawValue List<String>? = null,
     var descripcion: String? = "",
+    var macAsociada: String? = "",
     var nombre : String?=""
 ) : Parcelable {
 }

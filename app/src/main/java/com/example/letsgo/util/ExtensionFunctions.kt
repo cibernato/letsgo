@@ -1,5 +1,7 @@
 package com.example.letsgo.util
 
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -18,4 +20,8 @@ fun distancia(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
     val c = 2 * atan2(sqrt(a), sqrt(1-a));
 
     return r * c; // in metres
+}
+
+fun Date.toISOString(): String {
+    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(this)
 }
