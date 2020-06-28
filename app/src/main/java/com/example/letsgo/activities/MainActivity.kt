@@ -108,11 +108,11 @@ class MainActivity : AppCompatActivity() {
                                                     R.id.nav_presentacionFragment,
                                                     bundleOf("ubicacion" to ub)
                                                 )
-                                                this.hide()
+                                                this.dismiss()
                                             }
                                         findViewById<Button>(R.id.ord_confirmacion_no)
                                             .setOnClickListener {
-                                                this.hide()
+                                                this.dismiss()
                                             }
                                     }.show()
                                 }

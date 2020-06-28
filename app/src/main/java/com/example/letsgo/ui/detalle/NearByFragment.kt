@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.letsgo.R
-import com.example.letsgo.Ubicacion
+import com.example.letsgo.models.Ubicacion
 import com.example.letsgo.activities.MainActivityViewModel
 import com.example.letsgo.adapter.CercanosAdapter
 import kotlinx.android.synthetic.main.fragment_near_by.*

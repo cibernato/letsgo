@@ -1,4 +1,4 @@
-package com.example.letsgo
+package com.example.letsgo.models
 
 import android.os.Parcelable
 import com.google.firebase.firestore.GeoPoint

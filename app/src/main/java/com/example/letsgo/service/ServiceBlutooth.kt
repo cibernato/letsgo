@@ -14,7 +14,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.example.letsgo.Constantes
 import com.example.letsgo.db.LetsgoDatabase
 import com.example.letsgo.db.models.BluetoothItem
 import com.example.letsgo.util.toISOString
@@ -23,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.math.pow
 
 class ServiceBlutooth : IntentService("ServiceBlutooth") {
 

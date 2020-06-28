@@ -3,7 +3,7 @@ package com.example.letsgo.activities
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.letsgo.Ubicacion
+import com.example.letsgo.models.Ubicacion
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

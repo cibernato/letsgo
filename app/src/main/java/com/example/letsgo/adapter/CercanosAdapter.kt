@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.letsgo.R
-import com.example.letsgo.Ubicacion
+import com.example.letsgo.models.Ubicacion
 import kotlinx.android.synthetic.main.item_ubicacion_detalle.view.*
 
 class CercanosAdapter(
