@@ -97,14 +97,12 @@ class ServiceBlutooth : IntentService("ServiceBlutooth") {
         if (mBluetoothAdapter!!.isDiscovering) {
             mBluetoothAdapter!!.cancelDiscovery()
             Log.d(TAG, "btnDiscover: canceling discovering ...")
-            //            checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
             val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
             registerReceiver(mReceiver, filter)
         }
         if (!mBluetoothAdapter!!.isDiscovering) {
             Log.d(TAG, "btnDiscover: init dico...")
-            //            checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
             val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
             registerReceiver(mReceiver, filter)

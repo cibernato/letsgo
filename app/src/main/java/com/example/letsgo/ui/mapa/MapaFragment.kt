@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_mapa.*
 
 class MapaFragment : Fragment(), OnMapReadyCallback {
@@ -42,6 +40,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             ViewModelProvider(this).get(MainActivityViewModel::class.java)
         return inflater.inflate(R.layout.fragment_mapa, container, false)
     }
+
     private lateinit var mMapView: MapView
     lateinit var googleMap1: GoogleMap
     lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -63,18 +62,28 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         mMapView.getMapAsync(this)
 
         button.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.AGENCIAS.ordinal))
+            findNavController().navigate(
+                R.id.nav_detalleUbicacion,
+                bundleOf("tipo" to TiposLocales.AGENCIAS.ordinal)
+            )
         }
         button2.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.RESTAURANTE.ordinal))
+            findNavController().navigate(
+                R.id.nav_detalleUbicacion,
+                bundleOf("tipo" to TiposLocales.RESTAURANTE.ordinal)
+            )
         }
         button3.setOnClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion, bundleOf("tipo" to TiposLocales.TURISTICO.ordinal))
+            findNavController().navigate(
+                R.id.nav_detalleUbicacion,
+                bundleOf("tipo" to TiposLocales.TURISTICO.ordinal)
+            )
         }
 
 
     }
-    var marker :Marker?=null
+
+    var marker: Marker? = null
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap ?: return
         googleMap1 = googleMap
@@ -82,7 +91,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 //            if (lastMarker != null) lastMarker!!.remove()
 //            lastMarker = googleMap1.addMarker(MarkerOptions().position(it))
         }
-        googleMap1.setOnMarkerClickListener{
+        googleMap1.setOnMarkerClickListener {
             findNavController().navigate(R.id.nav_detalleUbicacion)
             true
         }
@@ -106,24 +115,29 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             mFusedLocationClient.lastLocation.addOnSuccessListener {
                 Log.e("location ", "$it ")
                 if (it != null) {
-                    moveCamera(
-                        com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                    marker = addMarker(
+                        MarkerOptions().position(
                             LatLng(
-                                it.latitude,
-                                it.longitude
-                            ), ZOOM_LEVEL
+                                it.latitude + 0.03,
+                                it.longitude + 0.03
+                            )
                         )
                     )
-                    marker = addMarker(MarkerOptions().position(
-                        LatLng(it.latitude+0.03,
-                            it.longitude+0.03)
-                    ))
                     marker
                 }
             }
-            addMarker(MarkerOptions().position(LatLng(-16.375413,71.597465)))
+            moveCamera(
+                com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        -16.4032661,
+                        -71.5476593
+                    ), 14.08f
+                )
+            )
+            addMarker(MarkerOptions().position(LatLng(-16.375413, 71.597465)))
         }
     }
+
     override fun onStart() {
         super.onStart()
         mMapView.onStart()

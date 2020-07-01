@@ -100,18 +100,15 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
             }
             isMyLocationEnabled = true
             mFusedLocationClient.lastLocation.addOnSuccessListener {
-                Log.e("location ", "$it ")
-                if (it != null) {
-                    moveCamera(
-                        com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
-                            LatLng(
-                                it.latitude,
-                                it.longitude
-                            ), ZOOM_LEVEL
-                        )
-                    )
-                }
             }
+            moveCamera(
+                com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        -16.4032661,
+                        -71.5476593
+                    ), 14.08f
+                )
+            )
             vm.ubicaciones.filter { it.tipo == tipo }.forEach {
                 addMarker(
                     MarkerOptions().position(

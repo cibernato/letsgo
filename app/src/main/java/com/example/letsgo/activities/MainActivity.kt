@@ -27,6 +27,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.letsgo.R
 import com.example.letsgo.db.LetsgoDatabase
 import com.example.letsgo.service.ServiceBlutooth
+import com.example.letsgo.util.ocultarFab
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -141,8 +142,11 @@ class MainActivity : AppCompatActivity() {
         val c = navController.currentDestination?.id
         if (c == R.id.nav_mapa && mFirebaseAuth.currentUser != null) {
             finish()
-        } else
-            super.onBackPressed()
+        }
+        if (c == R.id.nav_presentacionFragment) {
+            ocultarFab()
+        }
+        super.onBackPressed()
     }
 
     fun enableDisableBT(habilitar: Boolean = false) {
@@ -229,7 +233,7 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        Log.e("Permisos","Otorgados")
+        Log.e("Permisos", "Otorgados")
         enableDisableBT(true)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
