@@ -2,9 +2,14 @@ package com.example.letsgo.ui.detalle
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,12 +31,13 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_detalle_ubicacion.*
 
-class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
+class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventListener {
 
     private lateinit var viewModel: MainActivityViewModel
     lateinit var adapter: ViewPagerStateAdapter
     var tipo = 0
     val vm by activityViewModels<MainActivityViewModel>()
+    lateinit var sm: SensorManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +66,9 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
+        if(vm.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+            guideline.setGuidelinePercent(1f)
+        }
         mMapView = mapView2
         mMapView.onCreate(mapViewBundle)
         mMapView.getMapAsync(this)
@@ -69,7 +78,12 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
         view_pager_detalle.adapter = adapter
         view_pager_detalle.offscreenPageLimit = 2
         tabLayout.setupWithViewPager(view_pager_detalle)
-
+        sm = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sm.registerListener(
+            this,
+            sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_GAME
+        )
 
     }
 
@@ -147,5 +161,21 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
         mMapView.onLowMemory()
 
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            if (event.values[0] < -9 || event.values[0] > 9) {
+                vm.orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            } else if (event.values[1] < -9 || event.values[1] > 9) {
+                vm.orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+        }
     }
 }

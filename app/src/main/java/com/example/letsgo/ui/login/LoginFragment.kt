@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
                     .setAvailableProviders(providers)
                     .setTheme(R.style.LoginTheme)
 //                    .setLogo(R.drawable.logo2)
-                    .setIsSmartLockEnabled(true)
+                    .setIsSmartLockEnabled(false)
                     .build(),
                 LOGIN_PERMISSION
             )
