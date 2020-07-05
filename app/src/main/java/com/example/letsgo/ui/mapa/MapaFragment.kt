@@ -145,23 +145,30 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     override fun onStop() {
         super.onStop()
-        mMapView.onStop()
+        if(this::mMapView.isInitialized) {
+            mMapView.onStop()
+        }
     }
 
 
     override fun onPause() {
-        mMapView.onPause()
+        if(this::mMapView.isInitialized) {
+            mMapView.onPause()
+        }
         super.onPause()
     }
 
     override fun onDestroy() {
-        mMapView.onDestroy()
+        if(this::mMapView.isInitialized){
+            mMapView.onDestroy()
+        }
         super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mMapView.onLowMemory()
-
+        if(this::mMapView.isInitialized) {
+            mMapView.onLowMemory()
+        }
     }
 }

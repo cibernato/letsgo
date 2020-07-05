@@ -1,5 +1,6 @@
 package com.example.letsgo.activities
 
+import android.content.pm.ActivityInfo
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,9 +14,11 @@ class MainActivityViewModel : ViewModel() {
     val ref = FirebaseFirestore.getInstance().collection("/ubicaciones")
     var ubicaciones = ArrayList<Ubicacion>()
 
+    var orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
     fun getUbicaciones() {
         viewModelScope.launch(Dispatchers.IO) {
-            ref.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            ref.addSnapshotListener { querySnapshot, _ ->
                 ubicaciones.clear()
                 querySnapshot?.documents?.forEach {
                     ubicaciones.add(it.toObject(Ubicacion::class.java) ?: Ubicacion())
