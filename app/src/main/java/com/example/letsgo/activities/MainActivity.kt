@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_detalleUbicacion,
                 R.id.nav_lectorQrFragment
             ), drawerLayout
+
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
