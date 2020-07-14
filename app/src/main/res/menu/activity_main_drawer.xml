@@ -18,5 +18,16 @@
             android:id="@+id/nav_lectorQrFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="QR" />
+
+        <item
+            android:id="@+id/nav_estadisticasFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Estadisticas" />
+
+        <item
+            android:id="@+id/nav_configuracion"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Configuracion" />
+
     </group>
 </menu>

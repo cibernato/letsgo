@@ -19,6 +19,8 @@ import com.example.letsgo.activities.MainActivityViewModel
 import com.example.letsgo.constantes.LOGIN_PERMISSION
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginFragment : Fragment() {
 
@@ -79,6 +81,8 @@ class LoginFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOGIN_PERMISSION) {
+            FirebaseFirestore.getInstance().document("/usuarios/${mFirebaseAuth.currentUser?.uid}")
+                .set(hashMapOf("fechaCreated" to FieldValue.serverTimestamp()))
             findNavController().navigate(
                 R.id.nav_mapa, bundleOf(), NavOptions.Builder()
                     .setPopUpTo(

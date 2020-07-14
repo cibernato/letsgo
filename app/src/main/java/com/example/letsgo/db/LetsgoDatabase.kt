@@ -5,18 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.letsgo.db.dao.BluetoothItemDao
+import com.example.letsgo.db.dao.UbicacionDBDao
 import com.example.letsgo.db.models.BluetoothItem
+import com.example.letsgo.db.models.UbicacionDB
 
 @Database(
     entities = [
-        BluetoothItem::class
+        BluetoothItem::class,
+        UbicacionDB::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class LetsgoDatabase : RoomDatabase() {
 
     abstract val bluetoothItemDao: BluetoothItemDao
+    abstract val ubicacionDBDao: UbicacionDBDao
 
     companion object {
         @Volatile

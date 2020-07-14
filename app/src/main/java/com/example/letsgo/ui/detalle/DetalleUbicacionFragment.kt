@@ -10,6 +10,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,7 +85,6 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
             sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_GAME
         )
-
     }
 
     var marker: Marker? = null
@@ -161,6 +161,10 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         super.onLowMemory()
         mMapView.onLowMemory()
 
+    }
+
+    fun disableSensor(){
+        sm.unregisterListener(this)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

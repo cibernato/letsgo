@@ -8,3 +8,7 @@ enum class TiposLocales{
     TURISTICO,
     RESTAURANTE
 }
+enum class Estado{
+    INACTIVO,
+    ACTIVO
+}

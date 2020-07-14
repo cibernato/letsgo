@@ -66,7 +66,9 @@ class PresentacionFragment : Fragment(), SensorEventListener {
             )
             startActivityForResult(intent, SPEECH_REQUEST_CODE)
         }
-//        Log.e("prueba", Gson().toJson(ubicacion))
+        descripcion_ubicacion.text = "${ubicacion.descripcion} \n ${ubicacion.imagenes!!.size}"
+        nombre_ubicacion.text = ubicacion.nombre
+
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -108,7 +110,6 @@ class PresentacionFragment : Fragment(), SensorEventListener {
                         "valores",
                         "${linear_acceleration[0]}, ${linear_acceleration[1]}, ${linear_acceleration[2]}, "
                     )
-                    descripcion_ubicacion.text = currImageIndex.toString()
                     gravity[0] = 0f
                     gravity[1] = 0f
                     gravity[2] = 0f

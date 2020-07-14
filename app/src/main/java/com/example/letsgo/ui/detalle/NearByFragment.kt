@@ -46,6 +46,7 @@ class NearByFragment : Fragment(), CercanosAdapter.CercanoListener {
     }
 
     override fun onCercanoClick(ubicacion: Ubicacion) {
+        (activity?.supportFragmentManager?.primaryNavigationFragment!!.childFragmentManager.fragments[0] as DetalleUbicacionFragment).disableSensor()
         findNavController().navigate(R.id.nav_presentacionFragment, bundleOf("ubicacion" to ubicacion))
     }
 }

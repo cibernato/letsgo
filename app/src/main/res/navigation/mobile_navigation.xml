@@ -39,4 +39,14 @@
             android:name="ubicacion"
             app:argType="com.example.letsgo.models.Ubicacion" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_configuracion"
+        android:name="com.example.letsgo.ui.configuracion.ConfiguracionFragment"
+        android:label="fragment_configuracion"
+        tools:layout="@layout/fragment_configuracion" />
+    <fragment
+        android:id="@+id/nav_estadisticasFragment"
+        android:name="com.example.letsgo.ui.estadisticas.EstadisticasFragment"
+        android:label="fragment_estadisticas"
+        tools:layout="@layout/fragment_estadisticas" />
 </navigation>

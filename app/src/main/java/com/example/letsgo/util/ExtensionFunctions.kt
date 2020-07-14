@@ -3,15 +3,11 @@ package com.example.letsgo.util
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.letsgo.R
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 fun distancia(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
     val r = 6371e3; // metres
@@ -29,7 +25,7 @@ fun distancia(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
 }
 
 fun Date.toISOString(): String {
-    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(this)
+    return SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale.getDefault()).format(this)
 }
 
 fun AppCompatActivity.ocultarFab(){

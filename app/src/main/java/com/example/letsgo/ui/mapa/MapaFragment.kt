@@ -2,6 +2,7 @@ package com.example.letsgo.ui.mapa
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,16 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.letsgo.R
 import com.example.letsgo.activities.MainActivityViewModel
+import com.example.letsgo.constantes.Estado
 import com.example.letsgo.constantes.GPS_PERMISION
 import com.example.letsgo.constantes.TiposLocales
+import com.example.letsgo.service.TrackingService
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -25,11 +30,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_mapa.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MapaFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: MainActivityViewModel
+    val vm by activityViewModels<MainActivityViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +91,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
             )
         }
 
-
+        startTrackingService()
     }
 
     var marker: Marker? = null
@@ -138,6 +149,49 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun startTrackingService() {
+        vm.viewModelScope.launch(Dispatchers.IO) {
+            val ubs = vm.db.ubicacionDBDao.getAll()
+            if (ubs.size > 1) {
+                var distancia = 0.0
+                for (i in 1 until ubs.size) {
+                    val antes = ubs[i - 1]
+                    val despues = ubs[i]
+                    distancia += com.example.letsgo.util.distancia(
+                        antes.latitud!!,
+                        antes.longitud!!,
+                        despues.latitud!!,
+                        despues.longitud!!
+                    )
+                }
+                val fecha = ubs.last().fecha?.split("T")?.get(0)
+                Log.e("Antes de subir", "distancia: ,\n ${distancia},  \n $fecha  ")
+
+                FirebaseFirestore.getInstance()
+                    .document("/usuarios/${FirebaseAuth.getInstance().currentUser?.uid}/gpsTracking/$fecha")
+                    .update(
+                        "distancia", FieldValue.increment(distancia)
+                    ).addOnFailureListener {
+                        FirebaseFirestore.getInstance()
+                            .collection("/usuarios/${FirebaseAuth.getInstance().currentUser?.uid}/gpsTracking")
+                            .document("$fecha")
+                            .set(
+                                hashMapOf(
+                                    "fecha" to fecha,
+                                    "distancia" to distancia
+                                )
+                            )
+                    }
+
+                vm.db.ubicacionDBDao.clearAll()
+            }
+            activity?.runOnUiThread {
+                activity?.startService(Intent(requireContext(), TrackingService::class.java))
+                vm.gpsService == Estado.ACTIVO
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         mMapView.onStart()
@@ -145,21 +199,21 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     override fun onStop() {
         super.onStop()
-        if(this::mMapView.isInitialized) {
+        if (this::mMapView.isInitialized) {
             mMapView.onStop()
         }
     }
 
 
     override fun onPause() {
-        if(this::mMapView.isInitialized) {
+        if (this::mMapView.isInitialized) {
             mMapView.onPause()
         }
         super.onPause()
     }
 
     override fun onDestroy() {
-        if(this::mMapView.isInitialized){
+        if (this::mMapView.isInitialized) {
             mMapView.onDestroy()
         }
         super.onDestroy()
@@ -167,7 +221,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        if(this::mMapView.isInitialized) {
+        if (this::mMapView.isInitialized) {
             mMapView.onLowMemory()
         }
     }

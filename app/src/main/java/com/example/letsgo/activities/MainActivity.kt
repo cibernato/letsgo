@@ -14,6 +14,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -25,6 +26,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.letsgo.R
+import com.example.letsgo.constantes.Estado
 import com.example.letsgo.db.LetsgoDatabase
 import com.example.letsgo.service.ServiceBlutooth
 import com.example.letsgo.util.ocultarFab
@@ -47,30 +49,35 @@ class MainActivity : AppCompatActivity() {
     lateinit var db: LetsgoDatabase
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.IO + viewModelJob)
+    private val permisos = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.BLUETOOTH_ADMIN
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         db = LetsgoDatabase.getInstance(this)
-        val intentFilter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
-        this.registerReceiver(mBroadcastReceiver, intentFilter)
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         mFirebaseAuth = FirebaseAuth.getInstance()
-        vm = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        vm = ViewModelProvider(this).get(MainActivityViewModel::class.java).apply {
+            this.db = this@MainActivity.db
+        }
         vm.getUbicaciones()
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN
-            ),
-            PERMISSION_REQUEST_CODE
-        )
+        if (!checkPermissions(permisos)) {
+            ActivityCompat.requestPermissions(
+                this,
+                permisos,
+                PERMISSION_REQUEST_CODE
+            )
+        }else{
+            activarBluetoothService()
+        }
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -83,7 +90,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_mapa,
                 R.id.nav_detalleUbicacion,
-                R.id.nav_lectorQrFragment
+                R.id.nav_lectorQrFragment,
+                R.id.nav_configuracion
             ), drawerLayout
 
         )
@@ -125,14 +133,23 @@ class MainActivity : AppCompatActivity() {
             }.onFailure {
                 Log.e("Error", "", it)
             }
-
         }
-
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
+    fun activarBluetoothService() {
+        if(vm.bluetoothService == Estado.INACTIVO){
+            enableDisableBT(true)
+        }
+        val intentFilter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
+        this.registerReceiver(mBroadcastReceiver, intentFilter)
+    }
+
+    private fun checkPermissions(permisions: Array<String>): Boolean {
+        var x = true
+        permisions.iterator().forEach {
+            x = x and (ContextCompat.checkSelfPermission(this, it) == 0)
+        }
+        return x
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -168,6 +185,7 @@ class MainActivity : AppCompatActivity() {
 //                    unregisterReceiver(mBroadcastReceiver3)
                     mBluetoothAdapter!!.disable()
                     stopService(Intent(this, ServiceBlutooth::class.java))
+                    vm.bluetoothService = Estado.INACTIVO
                 }
             } else {
                 Log.d(TAG, "No tiene blutooth")
@@ -187,7 +205,8 @@ class MainActivity : AppCompatActivity() {
 //                    BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE -> Log.d(TAG, "mBroadcastReceiver2: Discoverability Enabled")
                     BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE -> {
                         Log.d(TAG, "mBroadcastReceiver2: Discoverability Enabled")
-                        startService(Intent(context, ServiceBlutooth::class.java));
+                        startService(Intent(context, ServiceBlutooth::class.java))
+                        vm.bluetoothService = Estado.ACTIVO
                     }
                     BluetoothAdapter.SCAN_MODE_CONNECTABLE -> Log.d(
                         TAG,
@@ -235,7 +254,6 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         Log.e("Permisos", "Otorgados")
-        enableDisableBT(true)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

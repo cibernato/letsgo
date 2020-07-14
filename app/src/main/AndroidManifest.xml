@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
         <service android:name=".service.ServiceBlutooth"/>
+        <service android:name=".service.TrackingService"/>
     </application>
 
 </manifest>

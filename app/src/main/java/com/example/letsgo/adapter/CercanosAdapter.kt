@@ -38,7 +38,8 @@ class CercanosAdapter(
         fun setData(ubicacion: Ubicacion) {
             Glide.with(itemView.context!!).load(ubicacion.imagenes!![0]).into(itemView.icono_lugar)
             itemView.titulo_lugar.text = ubicacion.nombre
-            itemView.descripcion_lugar.text = ubicacion.descripcion
+            itemView.ratingBar.rating = ubicacion.valoracion?.toFloat() ?: 1f
+            itemView.descripcion_lugar.text = ubicacion.direccion
             itemView.setOnClickListener{
                 cercanoListener.onCercanoClick(ubicacion)
             }

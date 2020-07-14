@@ -8,10 +8,12 @@ import kotlinx.android.parcel.RawValue
 @Parcelize
 class Ubicacion(
     var tipo: Int? = 0,
+    var valoracion: Int? = 1,
     var posicion: @RawValue GeoPoint? = null,
     var imagenes: @RawValue List<String>? = null,
     var descripcion: String? = "",
     var macAsociada: String? = "",
-    var nombre : String?=""
+    var nombre : String?="",
+    var direccion : String?=""
 ) : Parcelable {
 }
