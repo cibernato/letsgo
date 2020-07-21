@@ -10,10 +10,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,6 +22,7 @@ import com.example.letsgo.R
 import com.example.letsgo.activities.MainActivityViewModel
 import com.example.letsgo.adapter.ViewPagerStateAdapter
 import com.example.letsgo.constantes.GPS_PERMISION
+import com.example.letsgo.constantes.TiposLocales
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -61,13 +62,21 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
     @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        when (tipo) {
+            TiposLocales.AGENCIAS.ordinal -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title =
+                TiposLocales.AGENCIAS.name
+            TiposLocales.RESTAURANTE.ordinal -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title =
+                TiposLocales.RESTAURANTE.name
+            TiposLocales.TURISTICO.ordinal -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title =
+                TiposLocales.TURISTICO.name
+        }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         var mapViewBundle: Bundle? = null
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
-        if(vm.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+        if (vm.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             guideline.setGuidelinePercent(1f)
         }
         mMapView = mapView2
@@ -163,7 +172,7 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
 
     }
 
-    fun disableSensor(){
+    fun disableSensor() {
         sm.unregisterListener(this)
     }
 

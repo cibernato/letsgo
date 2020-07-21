@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_mapa.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,7 +104,15 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 //            lastMarker = googleMap1.addMarker(MarkerOptions().position(it))
         }
         googleMap1.setOnMarkerClickListener {
-            findNavController().navigate(R.id.nav_detalleUbicacion)
+            vm.ubicaciones.find { u -> u.posicion!!.latitude == it.position.latitude && u.posicion!!.longitude == it.position.longitude }
+                ?.let { ub ->
+                    Log.e("error", "onMapReady: ${Gson().toJson(ub)}" )
+                    findNavController().navigate(
+                        R.id.nav_detalleUbicacion,
+                        bundleOf("tipo" to ub.tipo)
+                    )
+                }
+
             true
         }
         with(googleMap) {
@@ -145,7 +154,16 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                     ), 14.08f
                 )
             )
-            addMarker(MarkerOptions().position(LatLng(-16.375413, 71.597465)))
+            vm.ubicaciones.forEach {
+                addMarker(
+                    MarkerOptions().position(
+                        LatLng(
+                            it.posicion!!.latitude,
+                            it.posicion!!.longitude
+                        )
+                    ).snippet(it.nombre)
+                )
+            }
         }
     }
 
@@ -186,8 +204,10 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                 vm.db.ubicacionDBDao.clearAll()
             }
             activity?.runOnUiThread {
-                activity?.startService(Intent(requireContext(), TrackingService::class.java))
-                vm.gpsService == Estado.ACTIVO
+                if (vm.gpsService != Estado.ACTIVO) {
+                    activity?.startService(Intent(requireContext(), TrackingService::class.java))
+                    vm.gpsService = Estado.ACTIVO
+                }
             }
         }
     }

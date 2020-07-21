@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         navController = findNavController(R.id.nav_host_fragment)
+//        navController.setGraph(R.navigation.mobile_navigation)
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_mapa,
@@ -255,5 +256,15 @@ class MainActivity : AppCompatActivity() {
     ) {
         Log.e("Permisos", "Otorgados")
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBundle("nav_state", navController.saveState())
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        navController.restoreState(savedInstanceState.getBundle("nav_state"))
+        super.onRestoreInstanceState(savedInstanceState)
     }
 }

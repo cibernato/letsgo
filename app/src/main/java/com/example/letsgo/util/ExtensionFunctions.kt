@@ -1,14 +1,20 @@
 package com.example.letsgo.util
 
+import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.letsgo.R
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.*
 
+fun Context.loge(message :String, ex : Exception = Exception()){
+    Log.e("ERRROR", message,ex)
+}
 fun distancia(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
     val r = 6371e3 // metres
     val p1 = lat1 * Math.PI/180; // φ, λ in radians

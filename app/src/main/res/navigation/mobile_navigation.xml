@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_mapa"
         android:name="com.example.letsgo.ui.mapa.MapaFragment"
-        android:label="@string/menu_home"
+        android:label="Mapa"
         tools:layout="@layout/fragment_mapa">
     </fragment>
     <fragment
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/nav_detalleUbicacion"
         android:name="com.example.letsgo.ui.detalle.DetalleUbicacionFragment"
-        android:label="@string/menu_slideshow"
+        android:label=""
         tools:layout="@layout/fragment_detalle_ubicacion" >
         <argument
             android:name="tipo"
@@ -28,12 +28,12 @@
     <fragment
         android:id="@+id/nav_lectorQrFragment"
         android:name="com.example.letsgo.ui.qr.LectorQrFragment"
-        android:label="fragment_lector_qr"
+        android:label="QR"
         tools:layout="@layout/fragment_lector_qr" />
     <fragment
         android:id="@+id/nav_presentacionFragment"
         android:name="com.example.letsgo.ui.presentacion.PresentacionFragment"
-        android:label="fragment_presentacion"
+        android:label="Detalles"
         tools:layout="@layout/fragment_presentacion" >
         <argument
             android:name="ubicacion"
@@ -42,11 +42,11 @@
     <fragment
         android:id="@+id/nav_configuracion"
         android:name="com.example.letsgo.ui.configuracion.ConfiguracionFragment"
-        android:label="fragment_configuracion"
+        android:label="Configuracion"
         tools:layout="@layout/fragment_configuracion" />
     <fragment
         android:id="@+id/nav_estadisticasFragment"
         android:name="com.example.letsgo.ui.estadisticas.EstadisticasFragment"
-        android:label="fragment_estadisticas"
+        android:label="Estadisticas"
         tools:layout="@layout/fragment_estadisticas" />
 </navigation>
