@@ -1,3 +1,4 @@
+
 package com.example.letsgo.ui.detalle
 
 import android.Manifest
@@ -5,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -87,6 +89,7 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         adapter.addFrag(RecomendadoFragment.newInstance(tipo), "Recomendados")
         view_pager_detalle.adapter = adapter
         view_pager_detalle.offscreenPageLimit = 2
+        tabLayout.setTabTextColors(Color.BLACK,Color.BLACK)
         tabLayout.setupWithViewPager(view_pager_detalle)
         sm = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sm.registerListener(

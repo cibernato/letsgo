@@ -5,8 +5,8 @@ const val LOGIN_PERMISSION = 699
 enum class TiposLocales{
     ZERO,
     AGENCIAS,
-    TURISTICO,
-    RESTAURANTE
+    RESTAURANTE,
+    TURISTICO
 }
 enum class Estado{
     INACTIVO,

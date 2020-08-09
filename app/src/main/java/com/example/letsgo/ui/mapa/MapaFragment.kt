@@ -155,14 +155,14 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                 )
             )
             vm.ubicaciones.forEach {
-                addMarker(
-                    MarkerOptions().position(
-                        LatLng(
-                            it.posicion!!.latitude,
-                            it.posicion!!.longitude
-                        )
-                    ).snippet(it.nombre)
-                )
+                    addMarker(
+                        MarkerOptions().position(
+                            LatLng(
+                                it.posicion!!.latitude,
+                                it.posicion!!.longitude
+                            )
+                        ).snippet(it.nombre)
+                    )
             }
         }
     }
