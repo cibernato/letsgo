@@ -92,7 +92,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_mapa,
                 R.id.nav_detalleUbicacion,
                 R.id.nav_lectorQrFragment,
-                R.id.nav_configuracion
+                R.id.nav_configuracion,
+                R.id.nav_PantallaPrincipal
             ), drawerLayout
 
         )

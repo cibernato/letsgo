@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_login">
+    app:startDestination="@id/nav_login">
+
+    <fragment
+        android:id="@+id/nav_PantallaPrincipal"
+        android:name="com.example.letsgo.ui.PantallaPrincipal.PantallaPrincipalFragment"
+        android:label="Pantalla Principal"
+        tools:layout="@layout/fragment_pantalla_principal">
+    </fragment>
 
     <fragment
         android:id="@+id/nav_mapa"
