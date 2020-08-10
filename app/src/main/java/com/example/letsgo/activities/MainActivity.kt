@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavHost
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+
         navController = findNavController(R.id.nav_host_fragment)
 //        navController.setGraph(R.navigation.mobile_navigation)
         appBarConfiguration = AppBarConfiguration(
@@ -107,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     it.observe(this@MainActivity, Observer {
                         val local =
-                            vm.ubicaciones.find { u -> !u.macAsociada.isNullOrEmpty() && it.isNotEmpty() && u.macAsociada == it[0].mac }
+                            vm.ubicaciones.value!!.find { u -> !u.macAsociada.isNullOrEmpty() && it.isNotEmpty() && u.macAsociada == it[0].mac }
                         uiScope.launch(Dispatchers.IO) {
                             delay(10 * 1000)
                             local?.let { ub ->
@@ -260,12 +262,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBundle("nav_state", navController.saveState())
         super.onSaveInstanceState(outState)
+        outState.putBundle("nav_state", navController.saveState())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        navController.restoreState(savedInstanceState.getBundle("nav_state"))
         super.onRestoreInstanceState(savedInstanceState)
+
+        navController.restoreState(savedInstanceState.getBundle("nav_state"))
     }
 }

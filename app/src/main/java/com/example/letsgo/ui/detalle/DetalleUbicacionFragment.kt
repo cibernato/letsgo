@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.letsgo.R
 import com.example.letsgo.activities.MainActivityViewModel
 import com.example.letsgo.adapter.ViewPagerStateAdapter
@@ -54,6 +55,11 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         return inflater.inflate(R.layout.fragment_detalle_ubicacion, container, false)
     }
 
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putBundle("nav_state", findNavController().saveState())
+    }
+
     private lateinit var mMapView: MapView
     lateinit var googleMap1: GoogleMap
     lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -63,7 +69,6 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
 
     @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         when (tipo) {
             TiposLocales.AGENCIAS.ordinal -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title =
                 TiposLocales.AGENCIAS.name
@@ -95,7 +100,7 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         sm.registerListener(
             this,
             sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_GAME
+            SensorManager.SENSOR_DELAY_NORMAL
         )
     }
 
@@ -135,7 +140,7 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
                     ), 14.08f
                 )
             )
-            vm.ubicaciones.filter { it.tipo == tipo }.forEach {
+            vm.ubicaciones.value!!.filter { it.tipo == tipo }.forEach {
                 addMarker(
                     MarkerOptions().position(
                         LatLng(

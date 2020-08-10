@@ -1,7 +1,8 @@
 package com.example.letsgo.activities
 
 import android.content.pm.ActivityInfo
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.letsgo.constantes.Estado
@@ -13,23 +14,27 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
 
-    lateinit var db : LetsgoDatabase
+    lateinit var db: LetsgoDatabase
 
     val ref = FirebaseFirestore.getInstance().collection("/ubicaciones")
-    var ubicaciones = ArrayList<Ubicacion>()
 
     var orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     var gpsService = Estado.INACTIVO
     var bluetoothService = Estado.INACTIVO
 
+    private var _ubicaciones = MutableLiveData<ArrayList<Ubicacion>>().apply {
+        value = ArrayList()
+    }
+    var ubicaciones: LiveData<ArrayList<Ubicacion>> = _ubicaciones
     fun getUbicaciones() {
         viewModelScope.launch(Dispatchers.IO) {
             ref.addSnapshotListener { querySnapshot, _ ->
-                ubicaciones.clear()
-                querySnapshot?.documents?.forEach {
-                    ubicaciones.add(it.toObject(Ubicacion::class.java) ?: Ubicacion())
-                }
-                Log.e("ubicaciones","${ubicaciones.size}")
+                val temp =querySnapshot?.documents?.map {
+                    it.toObject(Ubicacion::class.java) ?: Ubicacion()
+                } ?: ArrayList()
+                _ubicaciones.postValue(ArrayList<Ubicacion>().apply {
+                    addAll(temp)
+                })
             }
         }
     }

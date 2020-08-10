@@ -1,6 +1,7 @@
 package com.example.letsgo.ui.detalle
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,8 @@ class NearByFragment : Fragment(), CercanosAdapter.CercanoListener {
     val vm by activityViewModels<MainActivityViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        adapter = CercanosAdapter(vm.ubicaciones.value!!.filter { it.tipo == tipo },this)
+        retainInstance= true
     }
 
     override fun onCreateView(
@@ -35,7 +37,6 @@ class NearByFragment : Fragment(), CercanosAdapter.CercanoListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = CercanosAdapter(vm.ubicaciones.filter { it.tipo == tipo },this)
         lista_cercanos.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         lista_cercanos.adapter = adapter
     }

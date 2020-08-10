@@ -12,14 +12,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.letsgo.R
 import com.example.letsgo.models.Ubicacion
 import com.example.letsgo.util.getToolbar
 import com.example.letsgo.util.mostrarFab
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_presentacion.*
+import java.util.*
 import kotlin.math.sqrt
 
 
@@ -66,7 +67,7 @@ class PresentacionFragment : Fragment(), SensorEventListener {
             )
             startActivityForResult(intent, SPEECH_REQUEST_CODE)
         }
-        descripcion_ubicacion.text = "${ubicacion.descripcion} \n ${ubicacion.imagenes!!.size}"
+        descripcion_ubicacion.text = "${ubicacion.descripcion}".toUpperCase(Locale.getDefault())
         nombre_ubicacion.text = ubicacion.nombre
 
     }
@@ -151,8 +152,13 @@ class PresentacionFragment : Fragment(), SensorEventListener {
                     ) ?: emptyList()
                 if (results.isNotEmpty()) {
                     when (results[0]) {
-                        "siguiente", "next", "sigue" -> loadNext()
+                        "siguiente", "next", "sigue", "despues", "adelante" -> loadNext()
                         "antes", "anterior", "atras", "back", "go back" -> loadPrevious()
+                        else -> Toast.makeText(
+                            requireContext(),
+                            "Pruebe con siguente,anterior o palabras similares.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

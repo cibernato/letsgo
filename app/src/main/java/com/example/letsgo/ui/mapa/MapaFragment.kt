@@ -104,7 +104,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 //            lastMarker = googleMap1.addMarker(MarkerOptions().position(it))
         }
         googleMap1.setOnMarkerClickListener {
-            vm.ubicaciones.find { u -> u.posicion!!.latitude == it.position.latitude && u.posicion!!.longitude == it.position.longitude }
+            vm.ubicaciones.value!!.find { u -> u.posicion!!.latitude == it.position.latitude && u.posicion!!.longitude == it.position.longitude }
                 ?.let { ub ->
                     Log.e("error", "onMapReady: ${Gson().toJson(ub)}" )
                     findNavController().navigate(
@@ -154,15 +154,15 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                     ), 14.08f
                 )
             )
-            vm.ubicaciones.forEach {
-                    addMarker(
-                        MarkerOptions().position(
-                            LatLng(
-                                it.posicion!!.latitude,
-                                it.posicion!!.longitude
-                            )
-                        ).snippet(it.nombre)
-                    )
+            vm.ubicaciones.value!!.forEach {
+                addMarker(
+                    MarkerOptions().position(
+                        LatLng(
+                            it.posicion!!.latitude,
+                            it.posicion!!.longitude
+                        )
+                    ).snippet(it.nombre)
+                )
             }
         }
     }

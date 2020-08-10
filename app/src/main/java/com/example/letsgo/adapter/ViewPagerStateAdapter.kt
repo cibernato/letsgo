@@ -9,7 +9,7 @@ import java.util.*
 /**
  * Created by a_man on 24-01-2018.
  */
-class ViewPagerStateAdapter(manager: FragmentManager?) : FragmentStatePagerAdapter(manager!!) {
+class ViewPagerStateAdapter(manager: FragmentManager?) : FragmentStatePagerAdapter(manager!!,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val fragmentsList: MutableList<Fragment> = ArrayList()
     private val fragmentsTitleList: MutableList<String> = ArrayList()
     override fun getItem(position: Int): Fragment {
