@@ -22,6 +22,7 @@ class NearByFragment : Fragment(), CercanosAdapter.CercanoListener {
     var tipo = 0
     lateinit var adapter : CercanosAdapter
     val vm by activityViewModels<MainActivityViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = CercanosAdapter(vm.ubicaciones.value!!.filter { it.tipo == tipo },this)

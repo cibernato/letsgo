@@ -6,9 +6,9 @@
     tools:context=".ui.detalle.RecomendadoFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recomendados"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_ubicacion_detalle"
-        />
+        tools:listitem="@layout/item_ubicacion_detalle" />
 
 </FrameLayout>

@@ -90,8 +90,8 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         mMapView.onCreate(mapViewBundle)
         mMapView.getMapAsync(this)
         adapter = ViewPagerStateAdapter(childFragmentManager)
-        adapter.addFrag(NearByFragment.newInstance(tipo), "Cercanos")
-        adapter.addFrag(RecomendadoFragment.newInstance(tipo), "Recomendados")
+        adapter.addFrag(NearByFragment.newInstance(tipo), "Recomendados")
+        adapter.addFrag(RecomendadoFragment.newInstance(tipo), "Cercanos")
         view_pager_detalle.adapter = adapter
         view_pager_detalle.offscreenPageLimit = 2
         tabLayout.setTabTextColors(Color.BLACK,Color.BLACK)
