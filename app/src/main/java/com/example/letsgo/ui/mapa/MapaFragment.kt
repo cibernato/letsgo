@@ -22,6 +22,7 @@ import com.example.letsgo.constantes.Estado
 import com.example.letsgo.constantes.GPS_PERMISION
 import com.example.letsgo.constantes.TiposLocales
 import com.example.letsgo.service.TrackingService
+import com.example.letsgo.util.getToolbar
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
