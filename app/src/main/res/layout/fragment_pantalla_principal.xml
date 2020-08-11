@@ -56,7 +56,7 @@
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/log"
+                            android:background="@drawable/mapa"
 
                             android:padding="10dp"/>
                         <TextView
@@ -100,7 +100,7 @@
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/log"
+                            android:background="@drawable/qr"
 
                             android:padding="10dp"/>
                         <TextView
@@ -151,7 +151,7 @@
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/log"
+                            android:background="@drawable/estadistica"
                             android:padding="10dp"/>
 
                         <TextView
@@ -195,7 +195,7 @@
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:background="@drawable/log"
+                            android:background="@drawable/ajustes"
                             android:padding="10dp"
                             />
 

@@ -94,7 +94,7 @@ class DetalleUbicacionFragment : Fragment(), OnMapReadyCallback, SensorEventList
         adapter.addFrag(RecomendadoFragment.newInstance(tipo), "Cercanos")
         view_pager_detalle.adapter = adapter
         view_pager_detalle.offscreenPageLimit = 2
-        tabLayout.setTabTextColors(Color.BLACK,Color.BLACK)
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE)
         tabLayout.setupWithViewPager(view_pager_detalle)
         sm = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sm.registerListener(
