@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val c = navController.currentDestination?.id
-        if (c == R.id.nav_mapa && mFirebaseAuth.currentUser != null) {
+        if (c == R.id.nav_PantallaPrincipal && mFirebaseAuth.currentUser != null) {
             finish()
         }
         if (c == R.id.nav_presentacionFragment) {

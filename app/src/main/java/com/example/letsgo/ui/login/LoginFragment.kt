@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
             findNavController().navigate(
                 R.id.nav_mapa, bundleOf(), NavOptions.Builder()
                     .setPopUpTo(
-                        R.id.nav_mapa,
+                        R.id.nav_PantallaPrincipal,
                         false
                     ).build()
             )
